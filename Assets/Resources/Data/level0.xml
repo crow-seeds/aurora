@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <layout hex="2,6,11" in="1" out="1"/>
+  <in id="0" test="0" data="r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r"/>
+  <out id="0" test="0" data="r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r,g,b,r"/>
+  <in id="0" test="1" data="c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c"/>
+  <out id="0" test="1" data="c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c,m,y,c"/>
+  <in id="0" test="2" data="w,r,w,y,w,g,w,b,w,m,w,r,w,y,w,g,w,b,w,m,w,r,w,y,w,g,w,b,w,m,w,r,w,y,w,g,w,b,w,m"/>
+  <out id="0" test="2" data="w,r,w,y,w,g,w,b,w,m,w,r,w,y,w,g,w,b,w,m,w,r,w,y,w,g,w,b,w,m,w,r,w,y,w,g,w,b,w,m"/>
+</data>

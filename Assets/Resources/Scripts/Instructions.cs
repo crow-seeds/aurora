@@ -10,6 +10,7 @@ public class Instructions : MonoBehaviour
     List<int> breakpoints = new List<int>();
     float timeBetweenInstructions = .3f;
     int currentInstruction = 0;
+    int previousInstruction = 0;
     int lastInstruction = 63;
 
     [SerializeField] ScrollRect scroll;
@@ -17,6 +18,7 @@ public class Instructions : MonoBehaviour
     float timer = 0;
     bool isMoving = false;
 
+    List<List<Color>> inputs = new List<List<Color>>();
 
     // Start is called before the first frame update
     void Start()
@@ -37,11 +39,16 @@ public class Instructions : MonoBehaviour
         {
             if(timeBetweenInstructions > 0)
             {
-
+                timer += Time.deltaTime / timeBetweenInstructions;
+                scroll.verticalNormalizedPosition = function(1 - (previousInstruction / 63f), 1 - (currentInstruction / 63f), timer);
+                if(timer >= 1)
+                {
+                    scroll.verticalNormalizedPosition = 1 - (currentInstruction / 63f);
+                }
             }
             else
             {
-                
+                scroll.verticalNormalizedPosition = 1 - (currentInstruction / 63f);
             }
         }
     }
@@ -71,6 +78,7 @@ public class Instructions : MonoBehaviour
         if (!isRunning)
         {
             isRunning = true;
+            isMoving = true;
             lastInstruction = -1;
             currentInstruction = 0;
             for (int i = 63; i >= 0; i--)
@@ -81,7 +89,6 @@ public class Instructions : MonoBehaviour
                     break;
                 }
             }
-            Debug.Log(lastInstruction);
             StartCoroutine(runProgramHelper());
         }
         
@@ -94,9 +101,21 @@ public class Instructions : MonoBehaviour
             int instruction = instructions[currentInstruction];
             int opcode = (instruction >> 7) & 0b111;
             int hex = ((instruction >> 3) & 0b1111) - 1;
+
+            if(hex >= hexagons.Count || (hex != -1 && !hexagons[hex].isActiveAndEnabled))
+            {
+                previousInstruction = currentInstruction;
+                currentInstruction++;
+                timer = 0;
+                yield return new WaitForSeconds(timeBetweenInstructions);
+                StartCoroutine(runProgramHelper());
+                yield break;
+            }
+
             int sign = (instruction >> 2) & 0b1;
             int amt = instruction & 0b11;
             int dir = instruction & 0b111;
+            scroll.vertical = false;
             switch (opcode)
             {
                 case 0: //rotate
@@ -174,15 +193,22 @@ public class Instructions : MonoBehaviour
                     break;
 
             }
+            previousInstruction = currentInstruction;
             currentInstruction++;
+            timer = 0;
             yield return new WaitForSeconds(timeBetweenInstructions);
 
-
+            
             StartCoroutine(runProgramHelper());
         }
         else
         {
+            currentInstruction = 0;
+            timer = 0;
+            yield return new WaitForSeconds(timeBetweenInstructions);
             isRunning = false;
+            isMoving = false;
+            scroll.vertical = true;
         }
         
     }
@@ -198,14 +224,14 @@ public class Instructions : MonoBehaviour
 
     public IEnumerator move(int hex, int dir)
     {
-        if(dir == 6)
+        if(dir == 0)
         {
-            StartCoroutine(move(hex, 0));
             StartCoroutine(move(hex, 1));
             StartCoroutine(move(hex, 2));
             StartCoroutine(move(hex, 3));
             StartCoroutine(move(hex, 4));
             StartCoroutine(move(hex, 5));
+            StartCoroutine(move(hex, 6));
             yield break;
         }
 
@@ -215,13 +241,13 @@ public class Instructions : MonoBehaviour
 
         switch (dir)
         {
-            case 0:
+            case 1:
                 if(hex > 3)
                 {
                     hexagons[hex - 4].give(3, timeBetweenInstructions, c);
                 }
                 break;
-            case 1:
+            case 2:
                 if(hex % 4 != 3 && hex != 0 && hex != 2)
                 {
                     if(hex % 2 == 1)
@@ -234,7 +260,7 @@ public class Instructions : MonoBehaviour
                     }
                 }
                 break;
-            case 2:
+            case 3:
                 if (hex % 4 != 3 && hex != 13 && hex != 14)
                 {
                     if (hex % 2 == 1)
@@ -247,13 +273,13 @@ public class Instructions : MonoBehaviour
                     }
                 }
                 break;
-            case 3:
+            case 4:
                 if (hex < 11)
                 {
                     hexagons[hex + 4].give(0, timeBetweenInstructions, c);
                 }
                 break;
-            case 4:
+            case 5:
                 if (hex % 4 != 0 && hex != 13)
                 {
                     if (hex % 2 == 1)
@@ -266,7 +292,7 @@ public class Instructions : MonoBehaviour
                     }
                 }
                 break;
-            case 5:
+            case 6:
                 if (hex % 4 != 0 && hex != 2)
                 {
                     if (hex % 2 == 1)
@@ -289,13 +315,13 @@ public class Instructions : MonoBehaviour
         Color c = Color.white;
         switch (color)
         {
-            case 0:
+            case 1:
                 c = Color.red;
                 break;
-            case 1:
+            case 2:
                 c = Color.green;
                 break;
-            case 2:
+            case 3:
                 c = Color.blue;
                 break;
         }
@@ -307,13 +333,13 @@ public class Instructions : MonoBehaviour
         Color c = Color.white;
         switch (color)
         {
-            case 0:
+            case 1:
                 c = Color.red;
                 break;
-            case 1:
+            case 2:
                 c = Color.green;
                 break;
-            case 2:
+            case 3:
                 c = Color.blue;
                 break;
         }
