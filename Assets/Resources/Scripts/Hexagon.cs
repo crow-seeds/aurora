@@ -9,6 +9,10 @@ public class Hexagon : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] List<RawImage> images;
     [SerializeField] TextMeshProUGUI number;
+    [SerializeField] Instructions ins;
+
+    public int isInput = -1;
+    public int isOutput = -1;
 
     void Start()
     {
@@ -24,7 +28,7 @@ public class Hexagon : MonoBehaviour
     public void rotate(int sign, int amount)
     {
         //clockwise
-        if(sign == 1)
+        if(sign == 0)
         {
             for(int i = 0; i < amount; i++)
             {
@@ -46,6 +50,11 @@ public class Hexagon : MonoBehaviour
 
     public void take(int dir, float time, Color c)
     {
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
+
         if (colorDifference(c, Color.white) < .1f)
         {
             Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[dir], Color.gray, time);
@@ -80,6 +89,11 @@ public class Hexagon : MonoBehaviour
 
     public void give(int dir, float time, Color c)
     {
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
+
         if(colorDifference(c, Color.gray) < .1f)
         {
             return;
@@ -101,6 +115,16 @@ public class Hexagon : MonoBehaviour
         {
             give(i, time, c);
         }
+    }
+
+    public void giveAllForce(float time, Color c)
+    {
+        Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[0], c, time);
+        Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[1], c, time);
+        Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[2], c, time);
+        Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[3], c, time);
+        Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[4], c, time);
+        Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[5], c, time);
     }
 
     public void takeAll(float time, Color c)
