@@ -232,7 +232,6 @@ public class Instructions : MonoBehaviour
     int outHex1 = -1;
     int outHex2 = -1;
 
-    bool machineOn = false;
     public int levelID = 0;
 
 
@@ -316,10 +315,10 @@ public class Instructions : MonoBehaviour
         }
 
         if(layoutNode.Attributes["inHex1"] != null) { inHex1 = Convert.ToInt32(layoutNode.Attributes["inHex1"].Value, format)-1; hexagons[inHex1].isInput = 1; }
-        if(layoutNode.Attributes["inHex2"] != null) { inHex2 = Convert.ToInt32(layoutNode.Attributes["inHex2"].Value, format)-1; hexagons[inHex1].isInput = 2; }
-        if(layoutNode.Attributes["inHex3"] != null) { inHex3 = Convert.ToInt32(layoutNode.Attributes["inHex3"].Value, format)-1; hexagons[inHex1].isInput = 3; }
-        if (layoutNode.Attributes["outHex1"] != null) { outHex1 = Convert.ToInt32(layoutNode.Attributes["outHex1"].Value, format) - 1; hexagons[outHex1].isOutput = 1; }
-        if (layoutNode.Attributes["outHex2"] != null) { outHex2 = Convert.ToInt32(layoutNode.Attributes["outHex2"].Value, format) - 1; hexagons[outHex1].isOutput = 2; }
+        if(layoutNode.Attributes["inHex2"] != null) { inHex2 = Convert.ToInt32(layoutNode.Attributes["inHex2"].Value, format)-1; hexagons[inHex2].isInput = 2; }
+        if(layoutNode.Attributes["inHex3"] != null) { inHex3 = Convert.ToInt32(layoutNode.Attributes["inHex3"].Value, format)-1; hexagons[inHex3].isInput = 3; }
+        if(layoutNode.Attributes["outHex1"] != null) { outHex1 = Convert.ToInt32(layoutNode.Attributes["outHex1"].Value, format) - 1; hexagons[outHex1].isOutput = 1; }
+        if(layoutNode.Attributes["outHex2"] != null) { outHex2 = Convert.ToInt32(layoutNode.Attributes["outHex2"].Value, format) - 1; hexagons[outHex2].isOutput = 2; }
 
 
         foreach (XmlNode objnode in dataNode.SelectNodes("row"))
@@ -341,7 +340,7 @@ public class Instructions : MonoBehaviour
                 case "out0":
                     fillBar(bars[outBar1], outBar1, name, colorStrings);
                     break;
-                case "out2":
+                case "out1":
                     fillBar(bars[outBar2], outBar2, name, colorStrings);
                     break;
             }
@@ -398,8 +397,8 @@ public class Instructions : MonoBehaviour
 
         clearHexagons();
         if(inHex1 != -1) {hexagons[inHex1].isInput = 0; hexagons[inHex1].giveAll(0f, testCases[inBar1][testCaseNum][0]); }
-        if(inHex2 != -1) {hexagons[inHex2].isInput = 0; hexagons[inHex2].giveAll(0f, testCases[inBar2][testCaseNum][0]); }
-        if(inHex2 != -1) {hexagons[inHex3].isInput = 0; hexagons[inHex3].giveAll(0f, testCases[inBar3][testCaseNum][0]); }
+        if(inHex2 != -1) {hexagons[inHex2].isInput = 1; hexagons[inHex2].giveAll(0f, testCases[inBar2][testCaseNum][0]); }
+        if(inHex3 != -1) {hexagons[inHex3].isInput = 2; hexagons[inHex3].giveAll(0f, testCases[inBar3][testCaseNum][0]); }
     }
 
     void clearBars()
@@ -429,14 +428,29 @@ public class Instructions : MonoBehaviour
         if(i == 0)
         {
             barPosition[inBar1]++;
+            if(barPosition[inBar1] >= testCases[inBar1][testCaseNum].Count)
+            {
+                return Color.gray;
+            }
+
             return testCases[inBar1][testCaseNum][barPosition[inBar1]];
         }else if(i == 1)
         {
             barPosition[inBar2]++;
+            if (barPosition[inBar2] >= testCases[inBar2][testCaseNum].Count)
+            {
+                return Color.gray;
+            }
+            Debug.Log("2: ");
+            Debug.Log(testCases[inBar2][testCaseNum][barPosition[inBar2]]);
             return testCases[inBar2][testCaseNum][barPosition[inBar2]];
         }else if(i == 3)
         {
             barPosition[inBar3]++;
+            if (barPosition[inBar3] >= testCases[inBar3][testCaseNum].Count)
+            {
+                return Color.gray;
+            }
             return testCases[inBar3][testCaseNum][barPosition[inBar3]];
         }
 
@@ -445,22 +459,58 @@ public class Instructions : MonoBehaviour
 
     float colorDifference(Color c1, Color c2)
     {
-        return Mathf.Abs(c1.r - c2.r) + Mathf.Abs(c1.g - c2.g) + Mathf.Abs(c1.b - c2.b);
+        return Mathf.Abs(Mathf.Clamp01(c1.r) - Mathf.Clamp01(c2.r)) + Mathf.Abs(Mathf.Clamp01(c1.g) - Mathf.Clamp01(c2.g)) + Mathf.Abs(Mathf.Clamp01(c1.b) - Mathf.Clamp01(c2.b));
     }
+
+    [SerializeField] Transform canvas;
+    bool gotWrong = false;
 
     void addColorToBar(int i, Color c)
     {
-        if(colorDifference(c, Color.gray) < .1f)
+        if(colorDifference(c, Color.gray) < .1f || !isRunning)
         {
             return;
         }
-
+        int compare = outBar1;
         int num = actOutBar1;
         if(i == 2)
         {
             num = actOutBar2;
+            compare = outBar2;
         }
+
+        if(barPosition[actOutBar1] >= testCases[outBar1][testCaseNum].Count - 1 && (actOutBar2 == -1 || barPosition[actOutBar2] >= testCases[outBar2][testCaseNum].Count - 1))
+        {
+            if (!gotWrong)
+            {
+                if(testCaseNum == 2)
+                {
+                    //win
+                }
+                else
+                {
+                    Debug.Log("pee");
+                    testCaseNum++;
+                    currentInstruction = 0;
+                    renderTestCase();
+                }
+            }
+            
+            return;
+        }
+
+
         bars[num].barCells[barPosition[num]].color = c;
+
+        if(colorDifference(c, testCases[compare][testCaseNum][barPosition[num]]) > .1f)
+        {
+            GameObject g = Instantiate(Resources.Load<GameObject>("Prefabs/Wrong"));
+            g.transform.SetParent(canvas);
+            g.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+            g.transform.position = bars[num].barCells[barPosition[num]].transform.position;
+            gotWrong = true;
+        }
+
         barPosition[num]++;
     }
 
@@ -505,6 +555,11 @@ public class Instructions : MonoBehaviour
 
     public void pressButton(ButtonParameters b)
     {
+        if (isRunning)
+        {
+            return;
+        }
+
         int r = b.row;
         int c = b.col;
         b.active = !b.active;
@@ -571,26 +626,27 @@ public class Instructions : MonoBehaviour
 
     IEnumerator runProgramHelper()
     {
-        if(currentInstruction <= lastInstruction && currentInstruction <= 63)
+        if(currentInstruction <= lastInstruction && currentInstruction <= 63 && isRunning)
         {
             int instruction = instructions[currentInstruction];
             int opcode = (instruction >> 7) & 0b111;
             int hex = ((instruction >> 3) & 0b1111) - 1;
 
-            if(hex >= hexagons.Count || (hex != -1 && !hexagons[hex].isActiveAndEnabled))
+            
+            if(opcode != 4 && (hex >= hexagons.Count || (hex != -1 && !hexagons[hex].isActiveAndEnabled)))
             {
-                previousInstruction = currentInstruction;
-                currentInstruction++;
-                timer = 0;
-                yield return new WaitForSeconds(timeBetweenInstructions);
-                StartCoroutine(runProgramHelper());
-                yield break;
+                opcode = 99;
             }
 
             int sign = (instruction >> 2) & 0b1;
             int amt = instruction & 0b11;
             int dir = instruction & 0b111;
+            int jumpTo = 0;
+
             scroll.vertical = false;
+
+            bool willJump = false;
+
             switch (opcode)
             {
                 case 0: //rotate
@@ -666,22 +722,124 @@ public class Instructions : MonoBehaviour
                         }
                     }
                     break;
+                case 3: //copy
+                    if (hex == -1)
+                    {
+                        for (int i = 0; i < hexagons.Count; i++)
+                        {
+                            Hexagon h = hexagons[i];
+                            if (h.isActiveAndEnabled)
+                            {
+                                copy(i, dir);
+                            }
+                        }
+                    }
+                    else if (hex >= 0 && hex < hexagons.Count)
+                    {
+                        copy(hex, dir);
+                    }
+                    break;
+                case 4: //jump
+                    willJump = true;
+                    Debug.Log("jumping!!!");
+                    jumpTo = instruction & 0b1111111;
+                    Debug.Log("jumping to: " + jumpTo.ToString());
+                    break;
+                case 5: //jump if red
+                    if(hex == -1)
+                    {
+                        for (int i = 0; i < hexagons.Count; i++)
+                        {
+                            Hexagon h = hexagons[i];
+                            if (h.isActiveAndEnabled && h.hasAny(Color.red))
+                            {
+                                willJump = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if(hexagons[hex].isActiveAndEnabled && hexagons[hex].hasAny(Color.red))
+                        {
+                            willJump = true;
+                        }
+                    }
+                    jumpTo = (sign == 1 ? -1 : 1 * (instruction & 0b11)) + currentInstruction;
+                    break;
+                case 6: //jump if green
+                    if (hex == -1)
+                    {
+                        for (int i = 0; i < hexagons.Count; i++)
+                        {
+                            Hexagon h = hexagons[i];
+                            if (h.isActiveAndEnabled && h.hasAny(Color.green))
+                            {
+                                willJump = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (hexagons[hex].isActiveAndEnabled && hexagons[hex].hasAny(Color.green))
+                        {
+                            willJump = true;
+                        }
+                    }
+                    jumpTo = (sign == 1 ? -1 : 1 * (instruction & 0b11)) + currentInstruction;
+                    break;
+                case 7: //jump if blue
+                    if (hex == -1)
+                    {
+                        for (int i = 0; i < hexagons.Count; i++)
+                        {
+                            Hexagon h = hexagons[i];
+                            if (h.isActiveAndEnabled && h.hasAny(Color.blue))
+                            {
+                                willJump = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (hexagons[hex].isActiveAndEnabled && hexagons[hex].hasAny(Color.blue))
+                        {
+                            willJump = true;
+                        }
+                    }
+                    jumpTo = (sign == 1 ? -1 : 1 * (instruction & 0b11)) + currentInstruction;
+                    break;
 
             }
-            previousInstruction = currentInstruction;
-            currentInstruction++;
-            timer = 0;
-            yield return new WaitForSeconds(timeBetweenInstructions);
 
             
-            StartCoroutine(runProgramHelper());
+            previousInstruction = currentInstruction;
+            if (!willJump)
+            {
+                currentInstruction++;
+            }
+            else
+            {
+                currentInstruction = jumpTo;
+            }
+            
+            timer = 0;
+            yield return new WaitForSeconds(timeBetweenInstructions);
+            canStep = true;
+            if (!isPaused)
+            {
+                StartCoroutine(runProgramHelper());
+            }
         }
-        else
+        else if(isRunning)
         {
             currentInstruction = 0;
             timer = 0;
             yield return new WaitForSeconds(timeBetweenInstructions);
-            StartCoroutine(runProgramHelper());
+            canStep = true;
+            if (!isPaused)
+            {
+                StartCoroutine(runProgramHelper());
+            }
             //isRunning = false;
             //isMoving = false;
             //scroll.vertical = true;
@@ -742,8 +900,6 @@ public class Instructions : MonoBehaviour
             case 3:
                 if (hex % 4 != 3 && hex != 13 && hex != 14)
                 {
-                    Debug.Log("moving");
-                    Debug.Log(c);
                     if (hex % 2 == 1)
                     {
                         Debug.Log("test!!!");
@@ -866,6 +1022,38 @@ public class Instructions : MonoBehaviour
         }
     }
 
+    public void copy(int hex, int dir)
+    {
+        Hexagon h = hexagons[hex];
+        Color c = Color.black;
+        if (dir == 0)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                c += h.getColor(i);
+            }
+        }
+        else
+        {
+            c = h.getColor(dir);
+            Debug.Log(c);
+            Debug.Log(dir);
+            Debug.Log(hex);
+        }
+
+
+        
+
+        if (hexagons[hex].isOutput >= 0)
+        {
+            hexagons[hex].giveAllForce(timeBetweenInstructions, c);
+            addColorToBar(hexagons[hex].isOutput, c);
+        }
+        else
+        {
+            hexagons[hex].giveAll(timeBetweenInstructions, c);
+        }
+    }
 
     public void setBreakpoint(int i)
     {
@@ -881,14 +1069,28 @@ public class Instructions : MonoBehaviour
 
     [SerializeField] GameObject playReg;
     [SerializeField] GameObject playFast;
+    [SerializeField] GameObject pause;
+    [SerializeField] GameObject step;
+
+    bool isPaused = false;
 
     public void playButton()
     {
-        if (!machineOn)
+        if (!isRunning)
         {
-            machineOn = true;
             runProgram();
         }
+
+        if (isPaused)
+        {
+            StartCoroutine(runProgramHelper());
+        }
+
+        isMoving = true;
+        isPaused = false;
+        step.SetActive(false);
+        pause.SetActive(true);
+
 
         if (playReg.activeSelf)
         {
@@ -900,7 +1102,7 @@ public class Instructions : MonoBehaviour
         {
             playReg.SetActive(true);
             playFast.SetActive(false);
-            timeBetweenInstructions = .05f;
+            timeBetweenInstructions = .01f;
         }
     }
 
@@ -911,16 +1113,53 @@ public class Instructions : MonoBehaviour
         {
             Destroy(g);
         }
+
+        GameObject[] wrongs = GameObject.FindGameObjectsWithTag("wrong");
+        foreach (GameObject g in wrongs)
+        {
+            Destroy(g);
+        }
+        testCaseNum = 0;
         playReg.SetActive(true);
         playFast.SetActive(false);
-        StopAllCoroutines();
+        step.SetActive(true);
+        pause.SetActive(false);
+        //StopAllCoroutines();
         renderTestCase();
         currentInstruction = 0;
         timer = 0;
         isRunning = false;
         isMoving = false;
         scroll.vertical = true;
+        isPaused = false;
+    }
 
-        
+    bool canStep = true;
+    public void pauseButton()
+    {
+        isPaused = true;
+        timeBetweenInstructions = .3f;
+        if (pause.activeSelf)
+        {
+            //StopAllCoroutines();
+            playReg.SetActive(true);
+            playFast.SetActive(false);
+            step.SetActive(true);
+            pause.SetActive(false);
+            scroll.verticalNormalizedPosition = 1 - (currentInstruction / 63f);
+            //isMoving = false;
+        }
+        else
+        {
+            if (!isRunning)
+            {
+                runProgram();
+            }
+            else if(canStep)
+            {
+                canStep = false;
+                StartCoroutine(runProgramHelper());
+            }
+        }
     }
 }

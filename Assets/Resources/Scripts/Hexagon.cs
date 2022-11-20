@@ -68,7 +68,8 @@ public class Hexagon : MonoBehaviour
 
 
         Color sub = images[dir].color - c;
-        if(colorDifference(c, Color.black) < .1f)
+        sub = new Color(Mathf.Round(sub.r), Mathf.Round(sub.g), Mathf.Round(sub.b));
+        if (colorDifference(sub, Color.black) < .1f)
         {
             sub = Color.gray;
         }
@@ -84,7 +85,7 @@ public class Hexagon : MonoBehaviour
 
     public float colorDifference(Color c1, Color c2)
     {
-        return Mathf.Abs(c1.r - c2.r) + Mathf.Abs(c1.g - c2.g) + Mathf.Abs(c1.b - c2.b);
+        return Mathf.Abs(Mathf.Clamp01(c1.r) - Mathf.Clamp01(c2.r)) + Mathf.Abs(Mathf.Clamp01(c1.g) - Mathf.Clamp01(c2.g)) + Mathf.Abs(Mathf.Clamp01(c1.b) - Mathf.Clamp01(c2.b));
     }
 
     public void give(int dir, float time, Color c)
@@ -111,7 +112,9 @@ public class Hexagon : MonoBehaviour
             return;
         }
 
+
         Color add = c + images[dir].color;
+        add = new Color(Mathf.Round(add.r), Mathf.Round(add.g), Mathf.Round(add.b));
         Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[dir], add, time);
     }
 
@@ -139,5 +142,31 @@ public class Hexagon : MonoBehaviour
         {
             take(i, time, c);
         }
+    }
+
+    public bool hasAny(Color c)
+    {
+        Debug.Log(colorDifference(c, Color.green));
+
+        for(int i = 0; i < 6; i++)
+        {
+            if(colorDifference(c, Color.red) < .1f && images[i].color.r > .8f)
+            {
+                return true;
+            }
+
+            if (colorDifference(c, Color.green) < .1f && images[i].color.g > .8f)
+            {
+                Debug.Log("true");
+                return true;
+            }
+
+            if (colorDifference(c, Color.blue) < .1f && images[i].color.b > .8f)
+            {
+                return true;
+            }
+        }
+        Debug.Log("false");
+        return false;
     }
 }

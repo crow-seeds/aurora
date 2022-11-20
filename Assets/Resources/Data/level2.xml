@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <layout hex="6,10,11,15" in="1" out="1" exName1="EX.15" inHex1="6" outHex1="15" name="2. Stain Remover" description="Remove RED from IN.6 into OUT.15"/>
+  <row id="in0" name="IN.6" test="0" data="y,m,y,m,w,w,b,b,g,g,r,r,r,b,b,y,y,y,m,m,m,r,r,g,g,c,c,c,r,g,b,c,m,y,m,y"/>
+  <row id="out0" name="OUT.15" test="0" data="g,b,g,b,c,c,b,b,g,g,b,b,g,g,g,b,b,b,g,g,c,c,c,g,b,c,b,g,b,g"/>
+  <row id="in0" name="IN.6" test="1" data="b,y,w,b,w,r,w,w,y,m,c,y,c,m,r,y,c,w,m,m,g,c,y,r,y,c,g,y,c,y,c,w,m,y,c,y"/>
+  <row id="out0" name="OUT.15" test="1" data="b,g,c,b,c,c,c,g,b,c,g,c,b,g,c,c,b,b,g,c,g,g,c,g,g,c,g,c,c,b,g,c,g"/>
+  <row id="in0" name="IN.6" test="2" data="w,g,b,w,r,w,r,c,g,c,g,y,w,w,r,r,g,b,b,r,m,r,b,m,w,r,m,r,g,b,w,c,r,g,g,y"/>
+  <row id="out0" name="OUT.15" test="2" data="c,g,b,c,c,c,g,c,g,g,c,c,g,b,b,b,b,b,c,b,g,b,c,c,g,g,g"/>
+</data>

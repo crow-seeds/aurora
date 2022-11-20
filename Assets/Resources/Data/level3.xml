@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <layout hex="5,6,7,8,11" in="1" out="2" exName1="EX.7" exName2="EX.8" inHex1="5" outHex1="7" outHex2="8" name="3. Simple Blue Green Separator" description="Send Greens into G.7 and Blues into B.8"/>
+  <row id="in0" name="IN.6" test="0" data="g,g,b,b,y,m,y,m,g,b,y,m,g,m,b,b,m,y,y,g,m,y,m,g,m,y,m,g,b,g,y,m,b,b,g,y"/>
+  <row id="out0" name="B.7" test="0" data="g,g,y,y,g,y,g,y,y,g,y,g,y,g,g,y,g,y"/>
+  <row id="out1" name="B.8" test="0" data="b,b,m,m,b,m,m,b,b,m,m,m,m,m,b,m,b,b"/>
+</data>
