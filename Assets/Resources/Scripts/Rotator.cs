@@ -28,6 +28,7 @@ public class Rotator : MonoBehaviour
         obj.localRotation = Quaternion.Euler(0, 0, function(sourceRot, destRot, time));
         if(time >= 1)
         {
+            obj.localRotation = Quaternion.Euler(0, 0, destRot);
             Destroy(gameObject);
         }
     }

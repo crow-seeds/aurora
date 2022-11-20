@@ -79,7 +79,7 @@ public class Hexagon : MonoBehaviour
 
     public Color getColor(int dir)
     {
-        return images[dir].color;
+        return images[dir-1].color;
     }
 
     public float colorDifference(Color c1, Color c2)
@@ -96,6 +96,12 @@ public class Hexagon : MonoBehaviour
 
         if(colorDifference(c, Color.gray) < .1f)
         {
+            return;
+        }
+
+        if(isOutput >= 0)
+        {
+            giveAllForce(time, c);
             return;
         }
 

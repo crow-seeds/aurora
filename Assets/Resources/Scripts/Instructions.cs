@@ -233,11 +233,13 @@ public class Instructions : MonoBehaviour
     int outHex2 = -1;
 
     bool machineOn = false;
+    public int levelID = 0;
 
 
     private void Awake()
     {
-        loadData(0);
+        setButtons();
+        loadData(levelID);
         renderTestCase();
     }
 
@@ -441,17 +443,23 @@ public class Instructions : MonoBehaviour
         return Color.white; 
     }
 
+    float colorDifference(Color c1, Color c2)
+    {
+        return Mathf.Abs(c1.r - c2.r) + Mathf.Abs(c1.g - c2.g) + Mathf.Abs(c1.b - c2.b);
+    }
+
     void addColorToBar(int i, Color c)
     {
+        if(colorDifference(c, Color.gray) < .1f)
+        {
+            return;
+        }
+
         int num = actOutBar1;
-        if(i == 1)
+        if(i == 2)
         {
             num = actOutBar2;
         }
-        Debug.Log(actOutBar1);
-        Debug.Log(num);
-        Debug.Log(bars[num]);
-        Debug.Log(barPosition[num]);
         bars[num].barCells[barPosition[num]].color = c;
         barPosition[num]++;
     }
@@ -475,25 +483,7 @@ public class Instructions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            machineOn = !machineOn;
-            if (!machineOn)
-            {
-                runProgram();
-            }
-            else
-            {
-                StopAllCoroutines();
-                renderTestCase();
-                currentInstruction = 0;
-                timer = 0;
-                isRunning = false;
-                isMoving = false;
-                scroll.vertical = true;
-            }
-
-        }
+        
 
         if (isMoving)
         {
@@ -521,6 +511,8 @@ public class Instructions : MonoBehaviour
 
         instructions[r] = (instructions[r] ^ (1 << c));
 
+        PlayerPrefs.SetInt("instruction_" + levelID.ToString() + "_" + b.row.ToString(), instructions[r]);
+
         if (b.active)
         {
             b.GetComponent<RawImage>().color = Color.gray;
@@ -528,6 +520,28 @@ public class Instructions : MonoBehaviour
         else
         {
             b.GetComponent<RawImage>().color = Color.white;
+        }
+    }
+
+    [SerializeField] List<Transform> instructionObjects;
+
+    public void setButtons()
+    {
+        for(int i = 0; i < 64; i++)
+        {
+            int num = PlayerPrefs.GetInt("instruction_" + levelID.ToString() + "_" + i.ToString(), 0);
+            if(num != 0)
+            {
+                instructions[i] = num;
+                for(int j = 0; j < 10; j++)
+                {
+                    if(((num >> j) & 1) == 1)
+                    {
+                        instructionObjects[i].GetChild(10 - j).GetComponent<RawImage>().color = Color.gray;
+                        instructionObjects[i].GetChild(10 - j).GetComponent<ButtonParameters>().active = true;
+                    }
+                }
+            }
         }
     }
 
@@ -729,8 +743,10 @@ public class Instructions : MonoBehaviour
                 if (hex % 4 != 3 && hex != 13 && hex != 14)
                 {
                     Debug.Log("moving");
+                    Debug.Log(c);
                     if (hex % 2 == 1)
                     {
+                        Debug.Log("test!!!");
                         hexagons[hex + 5].give(5, timeBetweenInstructions, c);
                         outHexNum = hex + 5;
                     }
@@ -796,7 +812,7 @@ public class Instructions : MonoBehaviour
 
         if(outHexNum >= 0 && hexagons[outHexNum].isActiveAndEnabled && hexagons[outHexNum].isOutput >= 0)
         {
-            hexagons[outHexNum].giveAllForce(timeBetweenInstructions, c);
+            //hexagons[outHexNum].giveAllForce(timeBetweenInstructions, c);
             addColorToBar(hexagons[outHexNum].isOutput, c);
         }
         
@@ -861,5 +877,50 @@ public class Instructions : MonoBehaviour
         {
             breakpoints.Add(i);
         }
+    }
+
+    [SerializeField] GameObject playReg;
+    [SerializeField] GameObject playFast;
+
+    public void playButton()
+    {
+        if (!machineOn)
+        {
+            machineOn = true;
+            runProgram();
+        }
+
+        if (playReg.activeSelf)
+        {
+            playReg.SetActive(false);
+            playFast.SetActive(true);
+            timeBetweenInstructions = .3f;
+        }
+        else
+        {
+            playReg.SetActive(true);
+            playFast.SetActive(false);
+            timeBetweenInstructions = .05f;
+        }
+    }
+
+    public void stopButton()
+    {
+        GameObject[] procs = GameObject.FindGameObjectsWithTag("process");
+        foreach (GameObject g in procs)
+        {
+            Destroy(g);
+        }
+        playReg.SetActive(true);
+        playFast.SetActive(false);
+        StopAllCoroutines();
+        renderTestCase();
+        currentInstruction = 0;
+        timer = 0;
+        isRunning = false;
+        isMoving = false;
+        scroll.vertical = true;
+
+        
     }
 }
