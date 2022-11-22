@@ -213,7 +213,7 @@ public class Instructions : MonoBehaviour
     int[] barPosition = new int[5];
 
     [SerializeField] List<Bar> bars = new List<Bar>();
-    [SerializeField] TextMeshProUGUI name;
+    [SerializeField] TextMeshProUGUI levelName;
     [SerializeField] TextMeshProUGUI description;
     int testCaseNum = 0;
 
@@ -237,6 +237,7 @@ public class Instructions : MonoBehaviour
 
     private void Awake()
     {
+        levelID = PlayerPrefs.GetInt("selectedLevel", 0);
         setButtons();
         loadData(levelID);
         renderTestCase();
@@ -262,7 +263,7 @@ public class Instructions : MonoBehaviour
         XmlNode layoutNode = dataNode.SelectSingleNode("layout");
         string onHex = layoutNode.Attributes["hex"].Value;
         List<int> onHexNums = (new List<string>(onHex.Split(','))).ConvertAll(int.Parse);
-        name.text = layoutNode.Attributes["name"].Value;
+        levelName.text = layoutNode.Attributes["name"].Value;
         description.text = layoutNode.Attributes["description"].Value;
 
 

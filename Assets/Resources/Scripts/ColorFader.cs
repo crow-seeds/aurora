@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ColorFader : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class ColorFader : MonoBehaviour
     Color destColor;
     float time = 0;
     EasingFunction.Function function;
+    bool isText = false;
+    TextMeshProUGUI textObj;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +27,25 @@ public class ColorFader : MonoBehaviour
     {
         time += Time.deltaTime / duration;
 
-        obj.color = new Color(function(sourceColor.r, destColor.r, time), function(sourceColor.g, destColor.g, time), function(sourceColor.b, destColor.b, time));
-        if (time >= 1)
+        if (!isText)
         {
-            obj.color = destColor;
-            Destroy(gameObject);
+            obj.color = new Color(function(sourceColor.r, destColor.r, time), function(sourceColor.g, destColor.g, time), function(sourceColor.b, destColor.b, time));
+            if (time >= 1)
+            {
+                obj.color = destColor;
+                Destroy(gameObject);
+            }
         }
+        else
+        {
+            textObj.color = new Color(function(sourceColor.r, destColor.r, time), function(sourceColor.g, destColor.g, time), function(sourceColor.b, destColor.b, time));
+            if (time >= 1)
+            {
+                textObj.color = destColor;
+                Destroy(gameObject);
+            }
+        }
+        
     }
 
     public void set(RawImage o, Color dest, float dur)
@@ -42,6 +58,21 @@ public class ColorFader : MonoBehaviour
         if (dur == 0)
         {
             o.color = dest;
+            Destroy(gameObject);
+        }
+    }
+
+    public void set(TextMeshProUGUI o, Color dest, float dur)
+    {
+        textObj = o;
+        isText = true;
+        sourceColor = o.color;
+        destColor = dest;
+        duration = dur;
+
+        if (dur == 0)
+        {
+            textObj.color = dest;
             Destroy(gameObject);
         }
     }

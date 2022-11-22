@@ -9,3 +9,9 @@
 8 - Hue Inverter (Invert colors)
 9 - Command Executor (Add, subtract based on rgb color command)
 10 - Hue Shifter (Shift color's hue by 1
+
+0
+1 7
+8 2 5
+10 4 6 3 
+9
