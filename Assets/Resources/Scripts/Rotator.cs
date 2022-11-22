@@ -40,7 +40,7 @@ public class Rotator : MonoBehaviour
         destRot = sourceRot + rotAmount;
         duration = dur;
 
-        if(dur == 0)
+        if(dur < .1f)
         {
             o.localRotation = Quaternion.Euler(0, 0, destRot);
             Destroy(gameObject);

@@ -68,13 +68,11 @@ public class Hexagon : MonoBehaviour
 
 
         Color sub = images[dir].color - c;
-        sub = new Color(Mathf.Round(sub.r), Mathf.Round(sub.g), Mathf.Round(sub.b));
+        sub = new Color(Mathf.Round(Mathf.Clamp01(sub.r)), Mathf.Round(Mathf.Clamp01(sub.g)), Mathf.Round(Mathf.Clamp01(sub.b)));
         if (colorDifference(sub, Color.black) < .1f)
         {
             sub = Color.gray;
         }
-
-
         Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[dir], sub, time);
     }
 
@@ -114,7 +112,7 @@ public class Hexagon : MonoBehaviour
 
 
         Color add = c + images[dir].color;
-        add = new Color(Mathf.Round(add.r), Mathf.Round(add.g), Mathf.Round(add.b));
+        add = new Color(Mathf.Round(Mathf.Clamp01(add.r)), Mathf.Round(Mathf.Clamp01(add.g)), Mathf.Round(Mathf.Clamp01(add.b)));
         Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[dir], add, time);
     }
 

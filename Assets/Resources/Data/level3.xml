@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data>
-  <layout hex="5,6,7,8,11" in="1" out="2" exName1="EX.7" exName2="EX.8" inHex1="5" outHex1="7" outHex2="8" name="3. Simple Blue Green Separator" description="Send Greens into G.7 and Blues into B.8"/>
-  <row id="in0" name="IN.6" test="0" data="g,g,b,b,y,m,y,m,g,b,y,m,g,m,b,b,m,y,y,g,m,y,m,g,m,y,m,g,b,g,y,m,b,b,g,y"/>
-  <row id="out0" name="B.7" test="0" data="g,g,y,y,g,y,g,y,y,g,y,g,y,g,g,y,g,y"/>
-  <row id="out1" name="B.8" test="0" data="b,b,m,m,b,m,m,b,b,m,m,m,m,m,b,m,b,b"/>
+  <layout hex="5,6,7,8,11" in="1" out="2" exName1="B.7" exName2="G.8" inHex1="5" outHex1="7" outHex2="8" name="3. Simple Blue Green Separator" description="Send IN.6 Greens into G.7 and Blues into B.8"/>
+	<row id="in0" name="IN.6" test="0" data="g,g,b,b,y,m,y,m,g,b,y,m,g,m,b,b,m,y,y,g,m,y,m,g,m,y,m,g,b,g,y,m,b,b,g,y"/>
+	<row id="out0" name="EX.7" test="0" data="g,g,y,y,g,y,g,y,y,g,y,g,y,g,g,y,g,y"/>
+	<row id="out1" name="EX.8" test="0" data="b,b,m,m,b,m,m,b,b,m,m,m,m,m,b,m,b,b"/>
+
+	<row id="in0" name="IN.6" test="1" data="g,b,g,m,b,y,b,y,m,b,b,y,y,g,m,y,b,g,m,m,b,b,g,b,g,b,m,b,y,g,b,b,y,b,m,y"/>
+	<row id="out0" name="EX.7" test="1" data="g,g,y,y,y,y,g,y,g,g,g,y,g,y,y"/>
+	<row id="out1" name="EX.8" test="1" data="b,m,b,b,m,b,b,m,b,m,m,b,b,b,b,m,b,b,b,b,m"/>
+
+	<row id="in0" name="IN.6" test="2" data="g,y,m,g,m,b,y,b,y,y,b,g,m,g,b,b,m,g,m,y,b,b,g,g,m,b,b,g,b,m,y,y,g,g,m,m"/>
+	<row id="out0" name="EX.7" test="2" data="g,y,g,y,y,y,g,g,g,y,g,g,g,y,y,g,g"/>
+	<row id="out1" name="EX.8" test="2" data="m,m,b,b,b,m,b,b,m,m,b,b,m,b,b,b,m,m,m"/>
+	
 </data>

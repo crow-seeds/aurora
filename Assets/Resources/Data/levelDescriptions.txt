@@ -1,0 +1,11 @@
+0 - Transportation Pipeline (Send in to out)
+1 - Dye Mixer (Combine two inputs)
+2 - Stain Remover (Remove red from every input)
+3 - Simple Blue Green Separator (Send greens into one input, blues into another)
+4 - Color Error Detection (Only pass colors that appear in both inputs)
+5 - Bleach Filter (Make non-whites go through)
+6 - Color Decomposer (Break color into primary colors)
+7 - Color Transistor (Send in to out only if other in is green)
+8 - Hue Inverter (Invert colors)
+9 - Command Executor (Add, subtract based on rgb color command)
+10 - Hue Shifter (Shift color's hue by 1

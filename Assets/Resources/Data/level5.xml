@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <layout hex="1,5,6,11,8" in="1" out="1" exName1="OUT.8" inHex1="1" outHex1="8" name="5. Bleach Filter" description="REMOVE WHITE COLORS FROM IN.1 TO OUT.8"/>
+	<row id="in0" name="IN.1" test="0" data="g,w,g,m,b,r,b,r,m,r,m,w,m,m,r,c,c,r,g,m,b,c,b,r,g,c,c,w,g,y,b,w,g,w,c,c"/>
+	<row id="out0" name="EX.8" test="0" data="g,g,m,b,r,b,r,m,r,m,m,m,r,c,c,r,g,m,b,c,b,r,g,c,c,g,y,b,g,c,c"/>
+
+	<row id="in0" name="IN.1" test="0" data="b,m,w,m,w,c,w,c,b,c,r,y,g,r,g,w,g,c,g,c,b,c,r,c,y,w,w,b,b,y,y,c,y,c,w,c"/>
+	<row id="out0" name="EX.8" test="0" data="b,m,m,c,c,b,c,r,y,g,r,g,g,c,g,c,b,c,r,c,y,b,b,y,y,c,y,c,c"/>
+
+	<row id="in0" name="IN.1" test="0" data="w,b,b,c,w,g,c,g,y,c,m,r,r,g,c,w,g,g,c,w,b,w,c,m,m,b,w,y,g,r,g,r,y,y,m,g"/>
+	<row id="out0" name="EX.8" test="0" data="b,b,c,g,c,g,y,c,m,r,r,g,c,g,g,c,b,c,m,m,b,y,g,r,g,r,y,y,m,g"/>
+</data>

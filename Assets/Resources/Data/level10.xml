@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <layout hex="7,11,10,12" in="1" out="1" exName1="OUT.7" inHex1="12" outHex1="7" name="10. HUE SHIFTER" description="SHIFT THE HUE OF IN.12 TO OUT.7"/>
+	<row id="in0" name="IN.12" test="0"    data="r,r,r,y,y,y,g,g,g,c,c,c,b,b,b,m,m,m,r,b,r,r,g,g,b,m,r,c,g,b,r,g,r,r,g,m"/>
+	<row id="out0" name="EX.7" test="0"    data="y,y,y,g,g,g,c,c,c,b,b,b,m,m,m,r,r,r,y,m,y,y,c,c,m,r,y,b,c,m,y,c,y,y,c,r"/>
+
+	<row id="in0" name="IN.12" test="1"    data="b,b,y,c,b,m,g,y,y,c,b,c,r,b,g,r,c,r,b,r,y,m,c,c,g,r,y,y,m,m,g,g,b,b,b,y"/>
+	<row id="out0" name="EX.7" test="1"    data="m,m,g,b,m,r,c,g,g,b,m,b,y,m,c,y,b,y,m,y,g,r,b,b,c,y,g,g,r,r,c,c,m,m,m,g"/>
+
+	<row id="in0" name="IN.12" test="2"    data="r,g,b,g,m,g,g,g,c,g,c,y,c,y,m,b,b,m,y,r,y,m,g,c,b,y,b,g,g,g,y,m,g,g,g,c"/>
+	<row id="out0" name="EX.7" test="2"    data="y,c,m,c,m,c,c,c,b,c,b,g,b,g,m,m,m,m,g,y,g,m,c,b,m,g,m,c,c,c,g,m,c,c,c,b"/>
+</data>

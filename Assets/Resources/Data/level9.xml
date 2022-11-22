@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <layout hex="1,2,7,5,6,9,12,15" in="3" out="1" exName1="OUT.7" inHex1="1" inHex2="5" inHex3="12" outHex1="7" name="9. Command Executor" description="IF 12 IS RED ADD, GREEN 1 SUB 5, BLUE 5 SUB 1"/>
+	<row id="in0" name="IN.1" test="0"    data="c,g,y,g,y,m,b,m,y,m,y,r,r,m,y,m,y,m,c,b,c,y,r,b,m,c,c,g,g,c,r,g,c,w,r,w"/>
+	<row id="in1" name="IN.5" test="0"    data="b,b,y,m,m,r,c,b,m,y,b,y,g,c,r,y,r,c,m,r,r,r,c,y,c,b,w,b,w,b,y,r,r,b,w,m"/>
+	<row id="in2" name="OP.12" test="0"   data="g,r,r,r,b,g,b,g,b,g,g,r,r,g,g,g,r,b,g,b,b,g,g,r,r,r,b,b,b,g,b,r,r,g,b,g"/>
+	<row id="out0" name="EX.7" test="0"   data="g,c,y,w,b,b,g,r,b,b,y,y,y,r,g,b,y,g,g,r,r,g,r,w,w,c,r,b,m,g,g,y,w,y,c,g"/>
+
+	<row id="in0" name="IN.1" test="1"    data="b,g,y,r,r,m,w,w,g,r,c,m,w,m,r,c,y,b,y,g,w,b,g,c,y,w,w,m,m,w,w,y,b,m,m,w"/>
+	<row id="in1" name="IN.5" test="1"    data="m,b,y,m,y,r,y,b,w,c,g,c,c,b,b,y,r,m,g,b,g,w,g,g,w,g,r,r,y,b,c,g,g,c,b,c"/>
+	<row id="in2" name="OP.12" test="1"   data="r,r,r,b,b,r,g,r,b,r,r,g,r,r,b,r,g,b,g,r,g,r,r,r,b,g,g,r,b,r,g,g,b,g,g,g"/>
+	<row id="out0" name="EX.7" test="1"   data="m,c,y,b,g,m,b,w,m,w,c,r,w,m,b,w,g,r,r,c,m,w,g,c,b,m,c,m,g,w,r,r,g,r,r,r"/>
+
+	<row id="in0" name="IN.1" test="2"    data="m,w,y,g,m,g,m,b,r,c,b,r,w,m,y,w,m,g,y,m,c,r,c,y,b,r,m,r,g,b,g,g,r,g,b,g"/>
+	<row id="in1" name="IN.5" test="2"    data="w,y,y,c,g,m,c,g,b,b,w,g,g,c,r,b,g,b,c,y,y,c,r,c,m,m,c,y,c,c,w,b,m,r,m,r"/>
+	<row id="in2" name="OP.12" test="2"   data="r,r,r,r,r,r,r,r,r,r,r,r,g,g,g,g,g,g,g,g,g,g,g,g,b,b,b,b,b,b,b,b,b,b,b,b"/>
+	<row id="out0" name="EX.7" test="2"   data="w,w,y,c,w,w,w,c,m,c,w,y,m,r,g,y,m,g,r,b,b,r,c,r,r,b,g,g,b,g,m,b,b,r,r,r"/>
+</data>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <layout hex="1,2,3,4,6,11" in="2" out="1" exName1="OUT.11" inHex1="1" inHex2="4" outHex1="11" name="7. Color Transistor" description="IN.1 TO OUT.11 ONLY IF IN.4 IS GREEN"/>
+	<row id="in0" name="IN.1" test="0"    data="r,w,b,w,c,c,m,y,w,b,b,w,y,c,g,c,y,c,g,c,b,y,r,m,y,c,g,w,m,y,g,c,m,y,g,r"/>
+	<row id="in1" name="IN.4" test="0"    data="g,g,g,r,r,g,r,g,g,g,r,g,r,g,r,r,r,r,g,r,g,g,r,r,g,g,g,g,g,r,g,g,g,r,g,r"/>
+	<row id="out0" name="OUT.11" test="0" data="r,w,b,c,y,w,b,w,c,g,b,y,y,c,g,w,m,g,c,m,g"/>
+
+	<row id="in0" name="IN.1" test="1"    data="b,y,c,w,w,g,c,m,y,r,w,w,b,r,g,w,m,w,c,r,c,m,r,y,w,r,m,y,r,g,c,y,r,r,r,m"/>
+	<row id="in1" name="IN.4" test="1"    data="r,g,r,r,r,r,r,r,g,r,g,g,r,r,r,r,r,g,r,r,r,g,r,r,r,g,r,g,g,g,r,r,g,r,g,g"/>
+	<row id="out0" name="OUT.11" test="1" data="y,y,w,w,w,m,r,y,r,g,r,r,m"/>
+
+	<row id="in0" name="IN.1" test="1"    data="g,m,w,b,c,c,w,y,c,y,m,r,m,c,m,c,r,y,c,y,w,m,w,c,g,b,y,w,g,g,r,r,w,m,w,r"/>
+	<row id="in1" name="IN.4" test="1"    data="r,g,r,r,r,r,r,g,r,g,g,r,r,g,g,r,r,g,g,r,r,g,g,r,r,g,g,r,g,r,g,r,g,r,r,r"/>
+	<row id="out0" name="OUT.11" test="1" data="m,y,y,m,c,m,y,c,m,w,b,y,g,r,w"/>
+</data>

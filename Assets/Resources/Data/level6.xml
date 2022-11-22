@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data>
+  <layout hex="2,7,8,6,11,10,5,9" in="1" out="2" exName1="OUT.10" exName2="OUT.8" inHex1="2" outHex1="10" outHex2="8" name="6. Color Decomposer" description="BREAK IN.2 INTO RGB. OUT.10 MUST BE G OR B."/>
+	<row id="in0" name="IN.2" test="0"   data="c,c,y,y,m,m,y,m,c,y,m,c,c,c,m,c,y,y,c,m,m,c,c,c,m,y,c,m,m,c,y,y,c,c,m,m"/>
+	<row id="out0" name="EX.10" test="0" data="g,g,r,r,r,r,r,r,g,r,r,g,g,g,r,g,r,r,g,r,r,g,g,g,r,r,g,r,r,g,r,r,g,g,r,r"/>
+	<row id="out1" name="EX.8" test="0"  data="b,b,g,g,b,b,g,b,b,g,b,b,b,b,b,b,g,g,b,b,b,b,b,b,b,g,b,b,b,b,g,g,b,b,b,b"/>
+
+	<row id="in0" name="IN.2" test="1"   data="m,m,y,c,m,c,c,y,m,m,c,y,c,c,c,m,y,y,c,m,m,y,c,y,y,m,c,y,y,y,c,c,c,c,y,m"/>
+	<row id="out0" name="EX.10" test="1" data="r,r,r,g,r,g,g,r,r,r,g,r,g,g,g,r,r,r,g,r,r,r,g,r,r,r,g,r,r,r,g,g,g,g,r,r"/>
+	<row id="out1" name="EX.8" test="1"  data="b,b,g,b,b,b,b,g,b,b,b,g,b,b,b,b,g,g,b,b,b,g,b,g,g,b,b,g,g,g,b,b,b,b,g,b"/>
+
+	<row id="in0" name="IN.2" test="2"   data="m,m,c,y,y,m,y,c,c,c,c,y,y,c,y,y,m,y,m,m,y,c,m,c,c,c,y,c,c,y,y,m,y,m,y,y"/>
+	<row id="out0" name="EX.10" test="2" data="r,r,g,r,r,r,r,g,g,g,g,r,r,g,r,r,r,r,r,r,r,g,r,g,g,g,r,g,g,r,r,r,r,r,r,r"/>
+	<row id="out1" name="EX.8" test="2"  data="b,b,b,g,g,b,g,b,b,b,b,g,g,b,g,g,b,g,b,b,g,b,b,b,b,b,g,b,b,g,g,b,g,b,g,g"/>
+</data>

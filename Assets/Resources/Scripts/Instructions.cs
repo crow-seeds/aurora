@@ -441,10 +441,8 @@ public class Instructions : MonoBehaviour
             {
                 return Color.gray;
             }
-            Debug.Log("2: ");
-            Debug.Log(testCases[inBar2][testCaseNum][barPosition[inBar2]]);
             return testCases[inBar2][testCaseNum][barPosition[inBar2]];
-        }else if(i == 3)
+        }else if(i == 2)
         {
             barPosition[inBar3]++;
             if (barPosition[inBar3] >= testCases[inBar3][testCaseNum].Count)
@@ -479,8 +477,24 @@ public class Instructions : MonoBehaviour
             compare = outBar2;
         }
 
-        if(barPosition[actOutBar1] >= testCases[outBar1][testCaseNum].Count - 1 && (actOutBar2 == -1 || barPosition[actOutBar2] >= testCases[outBar2][testCaseNum].Count - 1))
+        if(barPosition[actOutBar1] >= testCases[outBar1][testCaseNum].Count - 1 && (actOutBar2 == -1 || barPosition[actOutBar2] > testCases[outBar2][testCaseNum].Count - 1))
         {
+            if(barPosition[actOutBar1] == testCases[outBar1][testCaseNum].Count - 1)
+            {
+                bars[num].barCells[barPosition[num]].color = c;
+
+                if (colorDifference(c, testCases[compare][testCaseNum][barPosition[num]]) > .1f)
+                {
+                    GameObject g = Instantiate(Resources.Load<GameObject>("Prefabs/Wrong"));
+                    g.transform.SetParent(canvas);
+                    g.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+                    g.transform.position = bars[num].barCells[barPosition[num]].transform.position;
+                    gotWrong = true;
+                }
+
+                barPosition[num]++;
+            }
+
             if (!gotWrong)
             {
                 if(testCaseNum == 2)
@@ -537,13 +551,16 @@ public class Instructions : MonoBehaviour
 
         if (isMoving)
         {
-            if(timeBetweenInstructions > 0)
+            if(timeBetweenInstructions > .1f)
             {
-                timer += Time.deltaTime / timeBetweenInstructions;
-                scroll.verticalNormalizedPosition = function(1 - (previousInstruction / 63f), 1 - (currentInstruction / 63f), timer);
                 if(timer >= 1)
                 {
                     scroll.verticalNormalizedPosition = 1 - (currentInstruction / 63f);
+                }
+                else
+                {
+                    timer += Time.deltaTime / timeBetweenInstructions;
+                    scroll.verticalNormalizedPosition = function(1 - (previousInstruction / 63f), 1 - (currentInstruction / 63f), timer);
                 }
             }
             else
@@ -596,6 +613,13 @@ public class Instructions : MonoBehaviour
                         instructionObjects[i].GetChild(10 - j).GetComponent<ButtonParameters>().active = true;
                     }
                 }
+            }
+
+            if (PlayerPrefs.GetInt("breakpoint_" + levelID.ToString() + "_" + i.ToString(), 0) == 1)
+            {
+                instructionObjects[i].GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.gray;
+                instructionObjects[i].GetChild(0).GetComponent<ButtonParameters>().active = true;
+                breakpoints.Add(i);
             }
         }
     }
@@ -730,13 +754,13 @@ public class Instructions : MonoBehaviour
                             Hexagon h = hexagons[i];
                             if (h.isActiveAndEnabled)
                             {
-                                copy(i, dir);
+                                copy(i, amt, sign);
                             }
                         }
                     }
                     else if (hex >= 0 && hex < hexagons.Count)
                     {
-                        copy(hex, dir);
+                        copy(hex, amt, sign);
                     }
                     break;
                 case 4: //jump
@@ -764,7 +788,7 @@ public class Instructions : MonoBehaviour
                             willJump = true;
                         }
                     }
-                    jumpTo = (sign == 1 ? -1 : 1 * (instruction & 0b11)) + currentInstruction;
+                    jumpTo = (instruction & 0b111) + currentInstruction;
                     break;
                 case 6: //jump if green
                     if (hex == -1)
@@ -785,7 +809,7 @@ public class Instructions : MonoBehaviour
                             willJump = true;
                         }
                     }
-                    jumpTo = (sign == 1 ? -1 : 1 * (instruction & 0b11)) + currentInstruction;
+                    jumpTo = (instruction & 0b111) + currentInstruction;
                     break;
                 case 7: //jump if blue
                     if (hex == -1)
@@ -806,7 +830,7 @@ public class Instructions : MonoBehaviour
                             willJump = true;
                         }
                     }
-                    jumpTo = (sign == 1 ? -1 : 1 * (instruction & 0b11)) + currentInstruction;
+                    jumpTo = (instruction & 0b111) + currentInstruction;
                     break;
 
             }
@@ -825,9 +849,14 @@ public class Instructions : MonoBehaviour
             timer = 0;
             yield return new WaitForSeconds(timeBetweenInstructions);
             canStep = true;
-            if (!isPaused)
+            if (!isPaused && !breakpoints.Contains(currentInstruction))
             {
                 StartCoroutine(runProgramHelper());
+            }
+
+            if(breakpoints.Contains(currentInstruction) && !isPaused)
+            {
+                pauseButton();
             }
         }
         else if(isRunning)
@@ -836,7 +865,7 @@ public class Instructions : MonoBehaviour
             timer = 0;
             yield return new WaitForSeconds(timeBetweenInstructions);
             canStep = true;
-            if (!isPaused)
+            if (!isPaused && !breakpoints.Contains(currentInstruction))
             {
                 StartCoroutine(runProgramHelper());
             }
@@ -1022,49 +1051,136 @@ public class Instructions : MonoBehaviour
         }
     }
 
-    public void copy(int hex, int dir)
+    public void copy(int hex, int dir, int sign)
     {
         Hexagon h = hexagons[hex];
-        Color c = Color.black;
+        Color c = Color.gray;
         if (dir == 0)
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 1; i < 7; i++)
             {
-                c += h.getColor(i);
+                if(colorDifference(h.getColor(i), Color.gray) > .1f)
+                {
+                    c += h.getColor(i);
+                }
             }
         }
         else
         {
             c = h.getColor(dir);
-            Debug.Log(c);
-            Debug.Log(dir);
-            Debug.Log(hex);
         }
 
-
+        if(colorDifference(c, Color.gray) < .1f)
+        {
+            return;
+        }
         
 
         if (hexagons[hex].isOutput >= 0)
         {
-            hexagons[hex].giveAllForce(timeBetweenInstructions, c);
-            addColorToBar(hexagons[hex].isOutput, c);
+            if(sign == 0)
+            {
+                hexagons[hex].giveAllForce(timeBetweenInstructions, c);
+                addColorToBar(hexagons[hex].isOutput, c);
+            }
         }
         else
         {
-            hexagons[hex].giveAll(timeBetweenInstructions, c);
+            if(sign == 0)
+            {
+                hexagons[hex].giveAll(timeBetweenInstructions, c);
+            }
+            else
+            {
+                hexagons[hex].takeAll(timeBetweenInstructions, c);
+            } 
         }
     }
 
-    public void setBreakpoint(int i)
+    public void setBreakpoint(ButtonParameters p)
     {
-        if (breakpoints.Contains(i))
+        if(p.col == 0)
         {
-            breakpoints.Remove(i);
-        }
-        else
+            if (breakpoints.Contains(p.row))
+            {
+                breakpoints.Remove(p.row);
+                p.active = false;
+                PlayerPrefs.SetInt("breakpoint_" + levelID.ToString() + "_" + p.row.ToString(), 0);
+                p.GetComponent<TextMeshProUGUI>().color = Color.white;
+            }
+            else
+            {
+                breakpoints.Add(p.row);
+                p.active = true;
+                PlayerPrefs.SetInt("breakpoint_" + levelID.ToString() + "_" + p.row.ToString(), 1);
+                p.GetComponent<TextMeshProUGUI>().color = Color.gray;
+            }
+        }else if(p.col == 1)
         {
-            breakpoints.Add(i);
+            if(instructions[p.row] == 0)
+            {
+                return;
+            }
+
+            int index = Mathf.Min(p.row + 1, 63);
+            instructions[index] = instructions[p.row];
+            instructions[p.row] = 0;
+
+            int num = instructions[index];
+
+            for (int j = 0; j < 10; j++)
+            {
+                if (((num >> j) & 1) == 1)
+                {
+                    instructionObjects[index].GetChild(10 - j).GetComponent<RawImage>().color = Color.gray;
+                    instructionObjects[index].GetChild(10 - j).GetComponent<ButtonParameters>().active = true;
+                }
+                else
+                {
+                    instructionObjects[index].GetChild(10 - j).GetComponent<RawImage>().color = Color.white;
+                    instructionObjects[index].GetChild(10 - j).GetComponent<ButtonParameters>().active = false;
+                }
+
+                instructionObjects[p.row].GetChild(10 - j).GetComponent<RawImage>().color = Color.white;
+                instructionObjects[p.row].GetChild(10 - j).GetComponent<ButtonParameters>().active = false;
+            }
+
+            PlayerPrefs.SetInt("instruction_" + levelID.ToString() + "_" + p.row.ToString(), instructions[p.row]);
+            PlayerPrefs.SetInt("instruction_" + levelID.ToString() + "_" + index.ToString(), instructions[index]);
         }
+        else if(p.col == 2)
+        {
+            if (instructions[p.row] == 0)
+            {
+                return;
+            }
+
+            int index = Mathf.Max(p.row - 1, 0);
+            instructions[index] = instructions[p.row];
+            instructions[p.row] = 0;
+
+            int num = instructions[index];
+
+            for (int j = 0; j < 10; j++)
+            {
+                if (((num >> j) & 1) == 1)
+                {
+                    instructionObjects[index].GetChild(10 - j).GetComponent<RawImage>().color = Color.gray;
+                    instructionObjects[index].GetChild(10 - j).GetComponent<ButtonParameters>().active = true;
+                }
+                else
+                {
+                    instructionObjects[index].GetChild(10 - j).GetComponent<RawImage>().color = Color.white;
+                    instructionObjects[index].GetChild(10 - j).GetComponent<ButtonParameters>().active = false;
+                }
+
+                instructionObjects[p.row].GetChild(10 - j).GetComponent<RawImage>().color = Color.white;
+                instructionObjects[p.row].GetChild(10 - j).GetComponent<ButtonParameters>().active = false;
+            }
+            PlayerPrefs.SetInt("instruction_" + levelID.ToString() + "_" + p.row.ToString(), instructions[p.row]);
+            PlayerPrefs.SetInt("instruction_" + levelID.ToString() + "_" + index.ToString(), instructions[index]);
+        }
+        
     }
 
     [SerializeField] GameObject playReg;
@@ -1102,7 +1218,7 @@ public class Instructions : MonoBehaviour
         {
             playReg.SetActive(true);
             playFast.SetActive(false);
-            timeBetweenInstructions = .01f;
+            timeBetweenInstructions = .005f;
         }
     }
 

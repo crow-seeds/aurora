@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data>
-  <layout hex="3,4,6,7" in="2" out="1" exName1="EX.6" inHex1="3" inHex2="4" outHex1="6" name="1. Dye Mixer" description="Combine IN.3 and IN.4 into OUT.6"/>
+  <layout hex="3,4,6,7" in="2" out="1" exName1="OUT.6" inHex1="3" inHex2="4" outHex1="6" name="1. Dye Mixer" description="Combine IN.3 and IN.4 into OUT.6"/>
   <row id="in0" name="IN.3" test="0" data="r,b,y,b,y,c,m,r,y,g,y,r,g,y,m,y,b,m,c,b,y,r,r,b,b,y,c,r,m,r,m,m,y,b,c,y"/>
   <row id="in1" name="IN.4" test="0" data="b,g,b,c,y,r,b,m,g,m,y,c,m,r,y,b,r,m,b,r,y,b,y,y,r,g,c,g,c,m,c,g,c,r,m,b"/>
-  <row id="out0" name="OUT.6" test="0" data="m,c,w,c,y,w,m,m,y,w,y,w,w,y,w,w,m,m,c,m,y,m,y,w,m,y,c,y,w,m,w,w,w,m,w,w"/>
+  <row id="out0" name="EX.6" test="0" data="m,c,w,c,y,w,m,m,y,w,y,w,w,y,w,w,m,m,c,m,y,m,y,w,m,y,c,y,w,m,w,w,w,m,w,w"/>
   <row id="in0" name="IN.3" test="1" data="b,b,g,r,r,g,r,r,r,g,g,g,g,r,g,r,r,b,g,r,g,b,b,g,g,r,g,b,b,g,b,r,g,b,g,r"/>
   <row id="in1" name="IN.4" test="1" data="g,b,b,g,g,r,r,g,g,g,r,r,r,g,b,r,g,g,g,g,r,g,r,r,g,g,r,g,g,b,g,r,b,r,b,g"/>
-  <row id="out0" name="OUT.6" test="1"  data="c,b,c,y,y,y,r,y,y,g,y,y,y,y,c,r,y,c,g,y,y,c,m,y,g,y,y,c,c,c,c,r,c,m,c,y"/>
+  <row id="out0" name="EX.6" test="1"  data="c,b,c,y,y,y,r,y,y,g,y,y,y,y,c,r,y,c,g,y,y,c,m,y,g,y,y,c,c,c,c,r,c,m,c,y"/>
   <row id="in0" name="IN.3" test="2" data="r,m,g,c,c,m,g,m,c,y,r,w,w,w,y,b,c,w,y,g,r,w,g,g,w,w,m,w,w,b,w,w,w,b,c,m"/>
   <row id="in1" name="IN.4" test="2" data="g,w,b,m,c,b,r,b,w,w,y,c,w,r,c,r,c,g,y,w,r,w,m,c,w,w,w,m,y,r,g,b,y,r,m,y"/>
-  <row id="out0" name="OUT.6" test="2" data="y,w,c,w,c,m,y,m,w,w,y,w,w,w,w,m,c,w,y,w,r,w,w,c,w,w,w,w,w,m,w,w,w,m,w,w"/>
+  <row id="out0" name="EX.6" test="2" data="y,w,c,w,c,m,y,m,w,w,y,w,w,w,w,m,c,w,y,w,r,w,w,c,w,w,w,w,w,m,w,w,w,m,w,w"/>
 	
 </data>
