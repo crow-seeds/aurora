@@ -10,6 +10,7 @@ public class Rotator : MonoBehaviour
     float sourceRot;
     float destRot;
     float time = 0;
+    bool isBeingDestroyed = false;
     EasingFunction.Function function;
 
 
@@ -23,14 +24,18 @@ public class Rotator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime / duration;
-
-        obj.localRotation = Quaternion.Euler(0, 0, function(sourceRot, destRot, time));
-        if(time >= 1)
+        if (!isBeingDestroyed)
         {
-            obj.localRotation = Quaternion.Euler(0, 0, destRot);
-            Destroy(gameObject);
+            time += Time.deltaTime / duration;
+
+            obj.localRotation = Quaternion.Euler(0, 0, function(sourceRot, destRot, time));
+            if (time >= 1)
+            {
+                obj.localRotation = Quaternion.Euler(0, 0, destRot);
+                Destroy(gameObject);
+            }
         }
+        
     }
 
     public void set(RectTransform o, float rotAmount, float dur)
@@ -45,5 +50,13 @@ public class Rotator : MonoBehaviour
             o.localRotation = Quaternion.Euler(0, 0, destRot);
             Destroy(gameObject);
         }
+    }
+
+    public void restart()
+    {
+        Debug.Log("piss!!");
+        isBeingDestroyed = true;
+        obj.localRotation = Quaternion.Euler(0, 0, destRot);
+        Destroy(gameObject);
     }
 }

@@ -14,6 +14,7 @@ public class ColorFader : MonoBehaviour
     EasingFunction.Function function;
     bool isText = false;
     TextMeshProUGUI textObj;
+    bool isBeingDestroyed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,27 +26,29 @@ public class ColorFader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time += Time.deltaTime / duration;
+        if (!isBeingDestroyed)
+        {
+            time += Time.deltaTime / duration;
 
-        if (!isText)
-        {
-            obj.color = new Color(function(sourceColor.r, destColor.r, time), function(sourceColor.g, destColor.g, time), function(sourceColor.b, destColor.b, time));
-            if (time >= 1)
+            if (!isText)
             {
-                obj.color = destColor;
-                Destroy(gameObject);
+                obj.color = new Color(function(sourceColor.r, destColor.r, time), function(sourceColor.g, destColor.g, time), function(sourceColor.b, destColor.b, time));
+                if (time >= 1)
+                {
+                    obj.color = destColor;
+                    Destroy(gameObject);
+                }
             }
-        }
-        else
-        {
-            textObj.color = new Color(function(sourceColor.r, destColor.r, time), function(sourceColor.g, destColor.g, time), function(sourceColor.b, destColor.b, time));
-            if (time >= 1)
+            else
             {
-                textObj.color = destColor;
-                Destroy(gameObject);
+                textObj.color = new Color(function(sourceColor.r, destColor.r, time), function(sourceColor.g, destColor.g, time), function(sourceColor.b, destColor.b, time));
+                if (time >= 1)
+                {
+                    textObj.color = destColor;
+                    Destroy(gameObject);
+                }
             }
-        }
-        
+        }    
     }
 
     public void set(RawImage o, Color dest, float dur)
@@ -75,5 +78,19 @@ public class ColorFader : MonoBehaviour
             textObj.color = dest;
             Destroy(gameObject);
         }
+    }
+
+    public void restart()
+    {
+        isBeingDestroyed = true;
+        if (!isText)
+        {
+            obj.color = sourceColor;
+        }
+        else
+        {
+            textObj.color = sourceColor;
+        }
+        Destroy(gameObject);
     }
 }

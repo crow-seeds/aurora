@@ -13,10 +13,12 @@ public class Hexagon : MonoBehaviour
 
     public int isInput = -1;
     public int isOutput = -1;
+    public bool[] wasGray = new bool[6];
+
 
     void Start()
     {
-        
+        wasGray = new bool[6];
     }
 
     // Update is called once per frame
@@ -106,7 +108,8 @@ public class Hexagon : MonoBehaviour
 
         if(colorDifference(images[dir].color, Color.gray) < .1f)
         {
-            Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[dir], c, time);
+            Color newC = new Color(Mathf.Round(Mathf.Clamp01(c.r)), Mathf.Round(Mathf.Clamp01(c.g)), Mathf.Round(Mathf.Clamp01(c.b)));
+            Instantiate(Resources.Load<ColorFader>("Prefabs/ColorFader")).set(images[dir], newC, time);
             return;
         }
 
@@ -166,5 +169,33 @@ public class Hexagon : MonoBehaviour
         }
         Debug.Log("false");
         return false;
+    }
+
+    public void updateGrayness()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if(colorDifference(images[i].color, Color.gray) < .1f)
+            {
+                wasGray[i] = true;
+            }
+            else
+            {
+                wasGray[i] = false;
+            }
+        }
+    }
+
+    public bool allTheSameShape()
+    {
+        Color c = images[0].color;
+        for (int i = 0; i < 6; i++)
+        {
+            if (colorDifference(c, images[i].color) > .2f)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
