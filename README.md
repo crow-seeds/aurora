@@ -1,4 +1,4 @@
-# aurora
+# Aurora
 Russian machine language coding game where you extract color from the aurora!
 
 See the first level being solved here:
